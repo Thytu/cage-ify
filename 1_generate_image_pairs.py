@@ -1,4 +1,5 @@
 import os
+import random
 import asyncio
 import requests
 import fal_client
@@ -9,7 +10,16 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-PROMPT = "Replace Nicolas Cage's face with Ryan Reynolds' face"
+PROMPTS = [
+    "Replace Nicolas Cage's face with Ryan Reynolds' face",
+    "Replace Nicolas Cage's face with Tom Hanks' face",
+    "Replace Nicolas Cage's face with Brad Pitt's face",
+    "Replace Nicolas Cage's face with Johnny Depp's face",
+    "Replace Nicolas Cage's face with Leonardo DiCaprio's face",
+]
+
+START_SUFFIX = "_start.jpg"
+END_SUFFIX = "_end.jpg"
 
 
 async def generate_image_pair(prompt: str, image_path: str, output_path: str):
@@ -42,8 +52,8 @@ async def main(batch_size: int = 10):
 
     for file in os.listdir("dataset"):
 
-        if file.endswith("_start.jpg") and not os.path.exists(f"dataset/{file.replace('_start.jpg', '_end.jpg')}"):
-            tasks.append(generate_image_pair(PROMPT, f"dataset/{file}", f"dataset/{file.replace('_start.jpg', '_end.jpg')}"))
+        if file.endswith(END_SUFFIX) and not os.path.exists(f"dataset/{file.replace(END_SUFFIX, START_SUFFIX)}"):
+            tasks.append(generate_image_pair(random.choice(PROMPTS), f"dataset/{file}", f"dataset/{file.replace(END_SUFFIX, START_SUFFIX)}"))
 
     for i in tqdm(range(0, len(tasks), batch_size)):
         await asyncio.gather(*tasks[i:min(i + batch_size, len(tasks))])
