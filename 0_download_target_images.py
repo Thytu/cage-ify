@@ -1,7 +1,13 @@
 import os
 import requests
 
+from tqdm import tqdm
 from duckduckgo_search import DDGS
+
+
+START_SUFFIX = "_start.jpg"
+END_SUFFIX = "_end.jpg"
+
 
 
 def download_cage_images(output_dir: str, query: str = "Nicolas Cage", max_results: int = 100):
@@ -14,17 +20,18 @@ def download_cage_images(output_dir: str, query: str = "Nicolas Cage", max_resul
             keywords=query,
             region="wt-wt",
             safesearch="moderate",
-            size="medium",
+            size="Large",
+            type_image="photo",
             max_results=max_results
         )
 
-        for i, result in enumerate(results):
+        for i, result in tqdm(enumerate(results), total=max_results):
             try:
                 img_url = result['image']
                 response = requests.get(img_url, timeout=10)
 
                 if response.status_code == 200:
-                    filename = f"{output_dir}/{i:03d}_start.jpg"
+                    filename = f"{output_dir}/{i:03d}{END_SUFFIX}"
                     with open(filename, 'wb') as f:
                         f.write(response.content)
 
