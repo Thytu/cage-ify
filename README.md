@@ -21,7 +21,10 @@ Cage-ify is a custom LoRA fine-tune of FLUX.1 Kontext that can replace any human
 ## 🚀 Quick Start
 
 ### Try Online (Recommended)
-[**🎮 Try Cage-ify Live →**](https://fal.ai/models/fal-ai/image-editing/cage-ify)
+1. Go to [flux-kontext-lora/image-to-image](https://fal.ai/models/fal-ai/flux-kontext-lora/image-to-image)
+2. Add as Lora: https://v3.fal.media/files/elephant/8xpifQRNdh-58tjcAmtyL_adapter_model.safetensors
+3. Use `Replace the face with Nicolas Cage's face` as prompt
+4. Cage-ify!
 
 ### API Usage
 ```python
